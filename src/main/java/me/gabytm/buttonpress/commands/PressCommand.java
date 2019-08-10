@@ -22,11 +22,15 @@ public class PressCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = ((Player) sender);
-
+        
         if (!(sender instanceof Player)) {
             sender.sendMessage(formatText(plugin.getConfig().getString("messages.press.consoleUsage")));
-        } else if (!player.hasPermission("buttonpress.press")) {
+            return;
+        }
+        
+        Player player = ((Player) sender);
+
+        if (!player.hasPermission("buttonpress.press")) {
             player.sendMessage(formatText(plugin.getConfig().getString("messages.press.noPermission")));
         } else if (!plugin.getLastPressedButton().containsKey(player.getUniqueId())) {
             player.sendMessage(formatText(plugin.getConfig().getString("messages.press.noButtonPressed")));
