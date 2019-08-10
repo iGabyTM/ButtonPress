@@ -25,7 +25,7 @@ public class PressCommand implements CommandExecutor {
         
         if (!(sender instanceof Player)) {
             sender.sendMessage(formatText(plugin.getConfig().getString("messages.press.consoleUsage")));
-            return;
+            return true;
         }
         
         Player player = ((Player) sender);
