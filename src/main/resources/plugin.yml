@@ -1,0 +1,9 @@
+name: ButtonPress
+version: ${project.version}
+main: me.gabytm.buttonpress.ButtonPress
+prefix: ButtonPress
+authors: [GabyTM]
+commands:
+  press:
+    description: The main command
+    usage: /press
