@@ -1,0 +1,9 @@
+messages:
+  press:
+    buttonNotFound: "&cI couldn't find the last button you have pressed."
+    buttonPressed: "&aThe button has been pressed!"
+    consoleUsage: "&cThis command can only be used by a player!"
+    noButtonPressed: "&cCouldn't find a button pressed by you!"
+    noPermission: "&cSorry but you can't use this command!"
+  reload:
+    noPermission: "&cSorry but you can't use this command!"

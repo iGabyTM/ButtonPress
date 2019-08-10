@@ -3,6 +3,7 @@ package me.gabytm.buttonpress.commands;
 import me.gabytm.buttonpress.ButtonPress;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,21 +25,31 @@ public class PressCommand implements CommandExecutor {
         Player player = ((Player) sender);
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(formatText("&cThis command can only be used by a player!"));
+            sender.sendMessage(formatText(plugin.getConfig().getString("messages.press.consoleUsage")));
         } else if (!player.hasPermission("buttonpress.press")) {
-            player.sendMessage(formatText("&cSorry but you can't use this command!"));
+            player.sendMessage(formatText(plugin.getConfig().getString("messages.press.noPermission")));
         } else if (!plugin.getLastPressedButton().containsKey(player.getUniqueId())) {
-            player.sendMessage(formatText("&cCouldn't find a button pressed by you!"));
+            player.sendMessage(formatText(plugin.getConfig().getString("messages.press.noButtonPressed")));
         } else {
             World world = player.getWorld();
 
             if (world.getBlockAt(plugin.getLastPressedButton().get(player.getUniqueId())).getType().equals(Material.STONE_BUTTON) || world.getBlockAt(plugin.getLastPressedButton().get(player.getUniqueId())).getType().equals(Material.WOOD_BUTTON)) {
-                Button button = new Button(world.getBlockAt(plugin.getLastPressedButton().get(player.getUniqueId())).getType());
-                button.setPowered(true);
+                BlockState buttonState = world.getBlockAt(plugin.getLastPressedButton().get(player.getUniqueId())).getState();
+                Button button = (Button) buttonState.getData();
 
-                player.sendMessage(formatText("&aThe button has been powered!"));
+                button.setPowered(true);
+                buttonState.setData(button);
+                buttonState.update();
+
+                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                    button.setPowered(false);
+                    buttonState.setData(button);
+                    buttonState.update();
+                }, delay(world.getBlockAt(plugin.getLastPressedButton().get(player.getUniqueId())).getType()));
+
+                player.sendMessage(formatText(plugin.getConfig().getString("messages.press.buttonPressed")));
             } else {
-                player.sendMessage(formatText("&cCouldn't find a button att that location."));
+                player.sendMessage(formatText(plugin.getConfig().getString("messages.press.buttonNotFound")));
             }
         }
         return true;

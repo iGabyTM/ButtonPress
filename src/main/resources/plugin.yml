@@ -4,6 +4,10 @@ main: me.gabytm.buttonpress.ButtonPress
 prefix: ButtonPress
 authors: [GabyTM]
 commands:
+  buttonpress:
+    description: The command used to reload the plugin
+    usage: /buttonpress
+    aliases: [bpress]
   press:
     description: The main command
     usage: /press
